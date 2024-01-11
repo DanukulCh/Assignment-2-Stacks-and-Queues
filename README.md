@@ -16,3 +16,37 @@ test_error_unmatched_close: ทดสอบสำหรับสตริง "He
 
 จากรายละเอียดทั้งหมดนี้ เราสามารถเข้าใจว่า bracket_check ควรจะเป็นฟังก์ชันที่ตรวจสอบว่าวงเล็บในสตริงถูกปิดทุกตัวอย่างถูกต้องหรือไม่ และคืนค่า True ถ้ามีข้อผิดพลาดและ False ถ้าไม่มีข้อผิดพลาด
 
+import unittest
+from bracket_check import bracket_check
+
+
+class MyTestCase(unittest.TestCase):
+    def test_no_error(self):
+        test_string = '[{(Hello)}]'
+        isError, location = bracket_check(test_string)
+        self.assertEqual(isError, False)
+
+    def test_error_1(self):
+        test_string = '[{(Hello})]'
+        isError, location = bracket_check(test_string)
+        self.assertEqual(isError, True)
+
+    def test_error_2(self):
+        test_string = '[{(Hello'
+        isError, location = bracket_check(test_string)
+        self.assertEqual(isError, True)
+
+    def test_error_3(self):
+        test_string = 'Hello)('
+        isError, location = bracket_check(test_string)
+        self.assertEqual(isError, True)
+
+    def test_error_4(self):
+        test_string = '{}{'
+        isError, location = bracket_check(test_string)
+        self.assertEqual(isError, True)
+        self.assertEqual([2], location)
+
+
+if __name__ == '__main__':
+    unittest.main()
